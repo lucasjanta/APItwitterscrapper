@@ -19,7 +19,7 @@ for tweet in sntwitter.TwitterSearchScraper(query).get_items():
 
 @app.get("/tweets/")
 def home():
-    return {tweets}
+    return {len(tweets)}
 
 
 @app.get("/tweets/{id_tweet}")
