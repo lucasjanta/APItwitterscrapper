@@ -1,27 +1,40 @@
 from fastapi import FastAPI
-from pydantic import BaseModel
+import snscrape.modules.twitter as sntwitter
 
 app = FastAPI()
 
-class Msg(BaseModel):
-    msg: str
+query = "drive.google.com"
+limit = 10
+tweets = []
+
+for tweet in sntwitter.TwitterSearchScraper(query).get_items():
+   if len(tweets) == limit:
+       break
+   else:
+        links = []
+        for link in tweet.links:
+            links.append(link.url)
+        tweets.append({'content': tweet.content, 'linkDrive': links, 'linkTweet': tweet.url})
 
 
-@app.get("/")
-async def root():
-    return {"message": "Hello World. Welcome to FastAPI!"}
+@app.get("/tweets")
+def home():
+    return {tweets}
 
 
-@app.get("/path")
-async def demo_get():
-    return {"message": "This is /path endpoint, use a post request to transform the text to uppercase"}
+@app.get("/tweets/{id_tweet}")
+def pegar_tweet(id_tweet: int):
+    return tweets[id_tweet]
 
-
-@app.post("/path")
-async def demo_post(inp: Msg):
-    return {"message": inp.msg.upper()}
-
-
-@app.get("/path/{path_id}")
-async def demo_get_path_id(path_id: int):
-    return {"message": f"This is /path/{path_id} endpoint, use post request to retrieve result"}
+@app.get("/reload/{num_tweets}")
+def recarregar_tweets(num_tweets: int):
+    limit = num_tweets
+    for tweet in sntwitter.TwitterSearchScraper(query).get_items():
+        if len(tweets) == limit:
+            break
+        else:
+            links = []
+            for link in tweet.links:
+                links.append(link.url)
+            tweets.append({'content': tweet.content, 'linkDrive': links, 'linkTweet': tweet.url})
+    return tweets
