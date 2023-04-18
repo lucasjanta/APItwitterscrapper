@@ -17,7 +17,7 @@ for tweet in sntwitter.TwitterSearchScraper(query).get_items():
         tweets.append({'content': tweet.content, 'linkDrive': links, 'linkTweet': tweet.url})
 
 
-@app.get("/tweets")
+@app.get("/tweets/")
 def home():
     return {tweets}
 
