@@ -6,9 +6,9 @@ tags:
   - python
 ---
 
-# FastAPI Example
+# TwitterScrapper API
 
-This example starts up a [FastAPI](https://fastapi.tiangolo.com/) server.
+This site starts up a [FastAPI](https://fastapi.tiangolo.com/) server, generating an API capable of retrieving tweets.
 
 [![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/new/template/-NvLj4?referralCode=milo)
 ## ✨ Features
